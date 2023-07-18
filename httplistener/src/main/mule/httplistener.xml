@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2ce59f2b-375f-4e9e-b22b-36aab58ef5c1" >
+		<http:listener-connection host="0.0.0.0" port="9000" />
+	</http:listener-config>
+	<flow name="httplistenerFlow" doc:id="c5c31dc9-9a2a-41c3-962e-e032cb277df3" >
+		<http:listener doc:name="Listener" doc:id="81ff61da-9091-4858-91c8-0b2c27951ff5" config-ref="HTTP_Listener_config" path="/world" allowedMethods="GET">
+		</http:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="25ed69b0-9c75-4a26-9b06-a5aa21f2f858" message="*** FIRST LOG ***"/>
+		<set-payload value='"Hello Ronaldo"' doc:name="Set Payload" doc:id="6afaf3e3-1885-4c78-b631-1401e63ceb56" />
+	</flow>
+	<flow name="uriParams" doc:id="bb41370e-1d5c-45a6-b278-f132a80dfa02" >
+		<http:listener doc:name="Listener" doc:id="e1ee7f56-cc26-4101-a0fe-8f3e1d5f8099" config-ref="HTTP_Listener_config" path="/uriParams/{NAME}" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="BEFORE LOGGER" doc:id="63ae3042-6260-4f75-92b4-81e05c59fb03" message = '#["LOG START - ++ flow.name"]' />
+		<set-payload value='#[attributes.uriParams."NAME"]' doc:name="Set Payload" doc:id="112a2ce9-95ae-4096-ac53-8e210d6eaff4" />
+	</flow>
+</mule>
